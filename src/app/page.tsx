@@ -1,9 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { Activity, AlertTriangle, ArrowDown, Flame, Star, Globe2, PlugZap, ShieldCheck, Waves } from "lucide-react";
-import GlobeCanvas from "@/components/GlobeCanvas";
+
+const PlanetGlobe = dynamic(() => import("@/components/PlanetGlobe"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-full flex-col items-center justify-center gap-3">
+      <div className="h-40 w-40 animate-pulse rounded-full bg-gradient-to-br from-cyan-500/20 to-violet-500/20" />
+      <p className="font-mono text-[10px] tracking-[0.3em] text-slate-500">SPINNING UP WEBGL GLOBE…</p>
+    </div>
+  ),
+});
 import LiveDashboard, { type AnalyzePreset } from "@/components/LiveDashboard";
 import Analyzer from "@/components/Analyzer";
 import McpDocs from "@/components/McpDocs";
@@ -47,7 +57,6 @@ export default function Home() {
     return () => clearInterval(id);
   }, [load]);
 
-  const pulses = useMemo(() => quakes.slice(0, 14).map((x) => ({ lat: x.geometry.lat, lon: x.geometry.lon, mag: x.mag })), [quakes]);
   const strongest = useMemo(() => quakes.reduce<QuakeFeature | null>((a, b) => (!a || (b.mag ?? -1) > (a.mag ?? -1) ? b : a), null), [quakes]);
   const big = quakes.filter((x) => (x.mag ?? 0) >= 4.5).length;
   const tsunami = quakes.filter((x) => x.tsunami === 1).length;
@@ -113,7 +122,7 @@ export default function Home() {
               <span className="flex items-center gap-1.5 text-emerald-300"><span className="h-1.5 w-1.5 animate-blink rounded-full bg-emerald-400" /> {quakes.length} CONTACTS</span>
             </div>
             <div className="h-[380px] sm:h-[440px]">
-              <GlobeCanvas pulses={pulses} />
+              <PlanetGlobe quakes={quakes} />
             </div>
             <div className="flex flex-wrap items-center gap-2 border-t border-white/10 px-5 py-3">
               {strongest ? (
