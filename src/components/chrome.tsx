@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
-import { Activity, Star, Radio, Satellite, ShieldCheck, Zap } from "lucide-react";
+import Link from "next/link";
+import { Activity, Radio, Satellite, ShieldCheck, Zap, Star } from "lucide-react";
 
 export function Navbar({ deployUrl }: { deployUrl: string }) {
   const [scrolled, setScrolled] = useState(false);
@@ -16,7 +17,7 @@ export function Navbar({ deployUrl }: { deployUrl: string }) {
       className={`fixed inset-x-0 top-0 z-50 transition-all ${scrolled ? "bg-[#04060c]/85 backdrop-blur-xl border-b border-white/10" : "bg-transparent border-b border-transparent"}`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5">
-        <a href="#top" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-2.5">
           <span className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 to-violet-500 font-mono text-sm font-bold text-black">
             ◉
             <span className="absolute -right-1 -top-1 flex h-3 w-3">
@@ -25,12 +26,13 @@ export function Navbar({ deployUrl }: { deployUrl: string }) {
             </span>
           </span>
           <span className="font-mono text-sm font-bold tracking-[0.22em]">TERRA&nbsp;PULSE</span>
-        </a>
+        </Link>
         <nav className="hidden items-center gap-7 font-mono text-[11px] tracking-[0.18em] text-slate-400 md:flex">
-          <a href="#live" className="transition hover:text-cyan-300">LIVE</a>
-          <a href="#analyze" className="transition hover:text-cyan-300">RISK&nbsp;ENGINE</a>
-          <a href="#agents" className="transition hover:text-cyan-300">MCP&nbsp;FOR&nbsp;AGENTS</a>
-          <a href="#seal" className="transition hover:text-cyan-300">SEAL&nbsp;CHAIN</a>
+          <Link href="/live" className="transition hover:text-cyan-300">LIVE</Link>
+          <Link href="/analyze" className="transition hover:text-cyan-300">RISK&nbsp;ENGINE</Link>
+          <Link href="/agents" className="transition hover:text-cyan-300">MCP&nbsp;FOR&nbsp;AGENTS</Link>
+          <Link href="/ai" className="transition hover:text-cyan-300">AI&nbsp;ASSISTANT</Link>
+          <Link href="/seal" className="transition hover:text-cyan-300">SEAL&nbsp;CHAIN</Link>
         </nav>
         <div className="flex items-center gap-2">
           <span className="hidden items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 font-mono text-[10px] tracking-widest text-emerald-300 sm:flex">
@@ -126,8 +128,9 @@ export function Footer() {
         <div>
           <p className="mb-4 font-mono text-[11px] tracking-[0.25em] text-slate-500">BUILDERS</p>
           <ul className="space-y-2.5 text-sm text-slate-300">
-            <li><a href="#agents" className="hover:text-cyan-300">MCP for agents</a></li>
-            <li><a href="#seal" className="hover:text-cyan-300">Seal chain</a></li>
+          <li><a href="#agents" className="hover:text-cyan-300">MCP for agents</a></li>
+          <li><a href="/ai" className="hover:text-cyan-300">AI assistant</a></li>
+          <li><a href="#seal" className="hover:text-cyan-300">Seal chain</a></li>
             <li><a href="https://github.com/aniruddhaadak80/terra-pulse" target="_blank" rel="noreferrer" className="hover:text-cyan-300">GitHub repo</a></li>
             <li><a href="https://earthquake.usgs.gov/" target="_blank" rel="noreferrer" className="hover:text-cyan-300">USGS source</a></li>
           </ul>

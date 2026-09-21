@@ -98,10 +98,10 @@ export default function Home() {
               <span className="text-slate-200">MCP server your coding agent can call</span>.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#live" className="flex items-center gap-2 rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-black transition hover:bg-cyan-300">
+              <a href="/live" className="flex items-center gap-2 rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-black transition hover:bg-cyan-300">
                 <Activity size={16} /> Watch it live <ArrowDown size={15} />
               </a>
-              <a href="#agents" className="flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-violet-300 hover:text-violet-200">
+              <a href="/agents" className="flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-violet-300 hover:text-violet-200">
                 <PlugZap size={16} /> Connect your agent
               </a>
               <a href="https://github.com/aniruddhaadak80/terra-pulse" target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-white/50">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AlertTriangle, ArrowUpRight, Crosshair, Flame, Search, Waves } from "lucide-react";
 import type { PlanetEvent, QuakeFeature } from "@/lib/types";
 
@@ -37,8 +38,9 @@ export default function LiveDashboard({
   quakes: QuakeFeature[];
   events: PlanetEvent[];
   loading: boolean;
-  onAnalyze: (p: AnalyzePreset) => void;
+  onAnalyze?: (p: AnalyzePreset) => void;
 }) {
+  const router = useRouter();
   const [minMag, setMinMag] = useState(0);
   const [q, setQ] = useState("");
   const [cat, setCat] = useState("All");
@@ -127,9 +129,11 @@ export default function LiveDashboard({
                 <p className="mt-1 break-all font-mono text-[10px] text-slate-500">seal {selected.seal}</p>
               </div>
               <button
-                onClick={() =>
-                  onAnalyze({ magnitude: selected.mag ?? 4, depthKm: selected.geometry.depthKm, tsunami: selected.tsunami === 1, place: selected.place })
-                }
+                onClick={() => {
+                  const preset = { magnitude: selected.mag ?? 4, depthKm: selected.geometry.depthKm, tsunami: selected.tsunami === 1, place: selected.place };
+                  if (onAnalyze) onAnalyze(preset);
+                  else router.push(`/analyze?mag=${preset.magnitude}&depth=${preset.depthKm}&tsunami=${preset.tsunami ? 1 : 0}&place=${encodeURIComponent(preset.place)}`);
+                }}
                 className="flex items-center gap-1.5 rounded-full bg-cyan-400 px-4 py-2 text-xs font-bold text-black transition hover:bg-cyan-300"
               >
                 <Crosshair size={13} /> Analyze risk
@@ -139,7 +143,7 @@ export default function LiveDashboard({
               <a href={selected.url} target="_blank" rel="noreferrer" className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200">
                 Open USGS event page ↗
               </a>
-              <a href="#analyze" className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200">
+              <a href="/analyze" className="rounded-full border border-white/15 px-3 py-1.5 text-xs text-slate-300 transition hover:border-cyan-300 hover:text-cyan-200">
                 Open risk engine ↓
               </a>
             </div>
