@@ -6,14 +6,14 @@
 
 **Live earthquakes (USGS) + wildfires, storms & volcanoes (NASA EONET) → one open dashboard with an explainable risk engine, a quantum-resilient audit seal, and an MCP server your coding agent can call.**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-22d3ee?style=for-the-badge&logo=vercel)](https://terra-pulse.vercel.app)
+[![Live Demo](https://img.shields.io/badge/demo-live-22d3ee?style=for-the-badge&logo=vercel)](https://terra-pulse-sooty.vercel.app)
 [![MIT](https://img.shields.io/badge/license-MIT-a78bfa?style=for-the-badge)](./LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
-[![MCP](https://img.shields.io/badge/MCP-agent_ready-34d399?style=for-the-badge)](https://terra-pulse.vercel.app/api/mcp)
+[![MCP](https://img.shields.io/badge/MCP-agent_ready-34d399?style=for-the-badge)](https://terra-pulse-sooty.vercel.app/api/mcp)
 [![USGS](https://img.shields.io/badge/feed-USGS_live-fb7185?style=for-the-badge)](https://earthquake.usgs.gov/)
 [![NASA](https://img.shields.io/badge/feed-NASA_EONET-fbbf24?style=for-the-badge)](https://eonet.gsfc.nasa.gov/)
 
-[Live App](https://terra-pulse.vercel.app) · [MCP Endpoint](https://terra-pulse.vercel.app/api/mcp) · [Quakes API](https://terra-pulse.vercel.app/api/quakes) · [Risk API](https://terra-pulse.vercel.app/api/analyze?magnitude=6.4&depthKm=18&tsunami=1) · [Report an issue](https://github.com/aniruddhaadak80/terra-pulse/issues)
+[Live App](https://terra-pulse-sooty.vercel.app) · [MCP Endpoint](https://terra-pulse-sooty.vercel.app/api/mcp) · [Quakes API](https://terra-pulse-sooty.vercel.app/api/quakes) · [Risk API](https://terra-pulse-sooty.vercel.app/api/analyze?magnitude=6.4&depthKm=18&tsunami=1) · [Report an issue](https://github.com/aniruddhaadak80/terra-pulse/issues)
 
 </div>
 
@@ -81,13 +81,13 @@ No environment variables required. The app works fully offline via built-in samp
 
 ```bash
 # Live quakes (biggest first, sealed)
-curl https://terra-pulse.vercel.app/api/quakes | head -c 600
+curl https://terra-pulse-sooty.vercel.app/api/quakes | head -c 600
 
 # Open NASA events
-curl https://terra-pulse.vercel.app/api/events | head -c 600
+curl https://terra-pulse-sooty.vercel.app/api/events | head -c 600
 
 # Risk briefing (GET or POST)
-curl 'https://terra-pulse.vercel.app/api/analyze?magnitude=6.4&depthKm=18&tsunami=1&place=Offshore%20Maule,%20Chile'
+curl 'https://terra-pulse-sooty.vercel.app/api/analyze?magnitude=6.4&depthKm=18&tsunami=1&place=Offshore%20Maule,%20Chile'
 ```
 
 ## 🤖 Give your agent a live planet
@@ -95,7 +95,7 @@ curl 'https://terra-pulse.vercel.app/api/analyze?magnitude=6.4&depthKm=18&tsunam
 Paste into `mcp.json` (Claude Code / Cursor / OpenCode):
 
 ```json
-{ "mcpServers": { "terra-pulse": { "url": "https://terra-pulse.vercel.app/api/mcp" } } }
+{ "mcpServers": { "terra-pulse": { "url": "https://terra-pulse-sooty.vercel.app/api/mcp" } } }
 ```
 
 Then ask: *“What were the strongest earthquakes in the last 24h, and what's the risk briefing for the biggest one?”* — the agent calls `get_quakes` → `analyze_risk` and cites the `tq384:` seals.
@@ -103,7 +103,7 @@ Then ask: *“What were the strongest earthquakes in the last 24h, and what's th
 Raw JSON-RPC also works:
 
 ```bash
-curl -X POST https://terra-pulse.vercel.app/api/mcp \
+curl -X POST https://terra-pulse-sooty.vercel.app/api/mcp \
   -H 'content-type: application/json' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
