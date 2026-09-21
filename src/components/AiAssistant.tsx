@@ -6,6 +6,7 @@ import { BrainCircuit, Loader2, Sparkles, ShieldCheck } from "lucide-react";
 export default function AiAssistant() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  const [fallback, setFallback] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
 
@@ -15,15 +16,17 @@ export default function AiAssistant() {
     setBusy(true);
     setErr("");
     setAnswer("");
+    setFallback(false);
     try {
       const r = await fetch("/api/ai", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ question: q }),
       });
-      if (!r.ok) throw new Error(`AI ${r.status}`);
       const j = await r.json();
+      if (!r.ok) throw new Error(typeof j.error === "string" ? j.error : `AI ${r.status}`);
       setAnswer(j.answer ?? "No response.");
+      setFallback(j.fallback === true);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "AI unavailable");
     } finally {
@@ -58,7 +61,7 @@ export default function AiAssistant() {
         {answer ? (
           <div className="space-y-4 text-sm leading-relaxed text-slate-200">
             <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.25em] text-emerald-300">
-              <ShieldCheck size={13} /> ASSISTANT REPLY
+              <ShieldCheck size={13} /> {fallback ? "DETERMINISTIC FALLBACK (GEMINI BUSY)" : "ASSISTANT REPLY"}
             </div>
             {answer.split("\n").map((line, i) => (
               <p key={i} className={line.startsWith("Verify") ? "text-rose-300/90 font-medium" : ""}>
