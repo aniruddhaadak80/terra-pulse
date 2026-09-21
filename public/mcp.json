@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/mcp.json",
+  "mcpServers": {
+    "terra-pulse": {
+      "url": "https://terra-pulse.vercel.app/api/mcp",
+      "description": "Live earthquakes (USGS), wildfires/storms/volcanoes (NASA EONET), and an explainable seismic risk engine."
+    }
+  }
+}
