@@ -43,7 +43,7 @@ export default function McpDocs({ baseUrl }: { baseUrl: string }) {
     }
   }
 
-  const origin = baseUrl || (typeof window !== "undefined" ? window.location.origin : "https://terra-pulse.vercel.app");
+  const origin = baseUrl || (typeof window !== "undefined" ? window.location.origin : "https://terra-pulse-sooty.vercel.app");
 
   return (
     <div className="grid gap-5 lg:grid-cols-2">

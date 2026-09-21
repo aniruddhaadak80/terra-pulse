@@ -1,5 +1,6 @@
+import { Suspense } from "react";
 import { SectionHeading, Footer, Navbar } from "@/components/chrome";
-import Analyzer from "@/components/Analyzer";
+import AnalyzeFromQuery from "@/components/AnalyzeFromQuery";
 
 export default function AnalyzePage() {
   return (
@@ -11,7 +12,9 @@ export default function AnalyzePage() {
           title={<>Explainable risk, <span className="bg-gradient-to-r from-violet-300 to-rose-300 bg-clip-text text-transparent">not black-box vibes.</span></>}
           lede="Every score shows its math: magnitude, depth, tsunami flag, exposure. The same engine answers your agents over MCP."
         />
-        <Analyzer preset={null} />
+        <Suspense fallback={<p className="mt-8 text-sm text-slate-400">Loading risk engine…</p>}>
+          <AnalyzeFromQuery />
+        </Suspense>
       </main>
       <Footer />
     </>
