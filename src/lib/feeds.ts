@@ -1,5 +1,5 @@
 import { sampleEvents, sampleQuakes } from "./fallback";
-import { sealChain } from "./seal";
+import { GENESIS_SEAL, sealChain } from "./seal";
 import type { PlanetEvent, QuakeFeature } from "./types";
 
 export const revalidateQuakeSecs = 120;
@@ -34,8 +34,7 @@ export async function loadQuakes(): Promise<{ source: string; count: number; qua
     if (!res.ok) throw new Error(`USGS ${res.status}`);
     const json = (await res.json()) as UsgsFeed;
     const feats = (json.features ?? []).slice(0, 80);
-    const seals = sealChain(feats, (f) => ({ id: f.id, p: f.properties?.mag }));
-    const quakes: QuakeFeature[] = feats.map((f, i) => {
+    const quakes: QuakeFeature[] = feats.map((f) => {
       const p = f.properties ?? {};
       const c = f.geometry?.coordinates ?? [0, 0, 0];
       return {
@@ -59,10 +58,16 @@ export async function loadQuakes(): Promise<{ source: string; count: number; qua
           lat: typeof c[1] === "number" ? c[1] : 0,
           depthKm: typeof c[2] === "number" ? c[2] : 0,
         },
-        seal: seals[i] ?? "TERRA-GENESIS",
+        seal: GENESIS_SEAL,
       };
     });
     quakes.sort((a, b) => (b.mag ?? -1) - (a.mag ?? -1));
+    // The chain has to follow the order the records are served in, otherwise
+    // the seals cannot be replayed from the API's own output.
+    const seals = sealChain(quakes, (q) => ({ id: q.id, p: q.mag }));
+    quakes.forEach((q, i) => {
+      q.seal = seals[i] ?? GENESIS_SEAL;
+    });
     return { source: "USGS all_day.geojson", count: quakes.length, quakes, cachedAt: new Date().toISOString() };
   } catch (err) {
     return {
@@ -105,7 +110,7 @@ export async function loadEvents(): Promise<{ source: string; count: number; eve
         })),
         lat,
         lon,
-        seal: seals[i] ?? "TERRA-GENESIS",
+        seal: seals[i] ?? GENESIS_SEAL,
       };
     });
     return { source: "NASA EONET v3", count: events.length, events, cachedAt: new Date().toISOString() };
